@@ -20,7 +20,7 @@ const { width } = Dimensions.get('window');
 // Datos por defecto para el perfil y logros
 const defaultHeroProfile = {
   name: 'Héroe Anónimo',
-  avatar: 'https://i.pravatar.cc/150?u=a',
+  avatar: 'https://i.pinimg.com/1200x/60/56/ad/6056ada4d871c8d345cc124c16754ab6.jpg',
 };
 
 const defaultStats = {
@@ -75,7 +75,6 @@ export default function HomeScreen({ navigation }) {
   const loadAllData = async () => {
     try {
       const savedName = await AsyncStorage.getItem('userName');
-      const savedAvatar = await AsyncStorage.getItem('userAvatar');
       const savedLevel = await AsyncStorage.getItem('userLevel');
       const savedExp = await AsyncStorage.getItem('userExp');
       const savedStats = await AsyncStorage.getItem('heroStats');
@@ -85,10 +84,14 @@ export default function HomeScreen({ navigation }) {
 
       const missions = await AsyncStorage.getItem('epicMissions');
       const completedMissions = await AsyncStorage.getItem('epicCompletedMissions');
-  const dailyQuests = await AsyncStorage.getItem('dailyQuests');
+      const dailyQuests = await AsyncStorage.getItem('dailyQuests');
+      
       // Cargar datos de perfil
       if (savedName) setUserName(savedName);
-      if (savedAvatar) setUserAvatar(savedAvatar);
+      
+      // Siempre usar la nueva imagen de perfil
+      setUserAvatar(defaultHeroProfile.avatar);
+      await AsyncStorage.setItem('userAvatar', defaultHeroProfile.avatar);
 
       // Cargar datos de misiones (tu lógica original)
       if (completedMissions) {
@@ -158,11 +161,10 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  // Función que mantiene la imagen fija
   const changeAvatar = () => {
-    const newAvatarUrl = `https://i.pravatar.cc/150?u=${Math.random()}`;
-    setUserAvatar(newAvatarUrl);
-    AsyncStorage.setItem('userAvatar', newAvatarUrl);
-    Alert.alert('Avatar cambiado', 'Tu avatar ha sido actualizado.');
+    // No hacer nada al tocar el avatar
+    return;
   };
 
   const checkAchievements = async () => {
